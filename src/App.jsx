@@ -45,6 +45,12 @@ function App() {
         }
 
         const raceData = await response.json()
+        
+        // Parse Records if it's a string
+        if (typeof raceData.Records === 'string') {
+          raceData.Records = JSON.parse(raceData.Records)
+        }
+        
         window.ftmsRaceData = raceData
         setData(raceData)
         setError(null)
