@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import SplitsChart from './SplitsChart'
+import PlayerStatsWidget from './PlayerStatsWidget'
 
 const API_BASE_URL = 'https://ff4blbpgd1.execute-api.ap-southeast-2.amazonaws.com/items'
 
@@ -36,7 +37,7 @@ function App() {
         setLoading(true)
         const url = `${API_BASE_URL}?id=${encodeURIComponent(id)}`
         const response = await fetch(url)
-        
+
         if (!response.ok) {
           if (response.status === 404) {
             throw new Error('Session not found')
@@ -45,12 +46,12 @@ function App() {
         }
 
         const raceData = await response.json()
-        
+
         // Parse Records if it's a string
         if (typeof raceData.Records === 'string') {
           raceData.Records = JSON.parse(raceData.Records)
         }
-        
+
         window.ftmsRaceData = raceData
         setData(raceData)
         setError(null)
@@ -87,60 +88,46 @@ function App() {
 
         {data && !loading && (
           <>
-          <div className="allData">
-          <div className="mainData">
 
-            <div className="data-info">
-              <h2>Race Results</h2>
-              <p className="timestamp">
-                {data.Timestamp && new Date(data.Timestamp).toLocaleString()}
-              </p>
-
-              <div className="info-grid">
-                <div className="info-card">
-                  <strong>Players</strong>
-                  <span>{data.Records?.length || 0}</span>
-                </div>
-                <div className="info-card">
-                  <strong>Race ID</strong>
-                  <span>{data.id}</span>
-                </div>
+            <div className="content-wrapper">
+              {/* Left Column: Charts */}
+              <div className="left-column">
+                <section className="chart-section">
+                  <SplitsChart records={data.Records} />
+                </section>
               </div>
-            </div>
 
-            {/* Chart Section */}
-            <section className="chart-section">
-              <SplitsChart records={data.Records} />
-            </section>
-            </div>
-            {/* Leaderboard */}
-            <div className="widgets">
-            <section className="leaderboard">
-              <h3>Final Standings</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Rank</th>
-                    <th>Player</th>
-                    <th>Finish Time</th>
-                    <th>HR</th>
-                    <th>Calories</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.Records?.map((record, idx) => (
-                    <tr key={idx} className={idx === 0 ? 'winner' : ''}>
-                      <td>#{idx + 1}</td>
-                      <td>{record.playerName}</td>
-                      <td>{formatSeconds(record.finishTimeSec)}</td>
-                      <td>{record.finalHeartRate} bpm</td>
-                      <td>{record.finalCalories}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </section>
-            </div>
+              {/* Right Column: Leaderboard + Player Stats */}
+              <div className="right-column">
+                <section className="leaderboard">
+                  <h3>Final Standings</h3>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>Finish Time</th>
+                        <th>HR</th>
+                        <th>Calories</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {data.Records?.map((record, idx) => (
+                        <tr key={idx} className={idx === 0 ? 'winner' : ''}>
+                          <td>#{idx + 1}</td>
+                          <td>{record.playerName}</td>
+                          <td>{formatSeconds(record.finishTimeSec)}</td>
+                          <td>{record.finalHeartRate} bpm</td>
+                          <td>{record.finalCalories}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </section>
+                <section className="sidebar-widgets">
+                  <PlayerStatsWidget records={data.Records} />
+                </section>
+              </div>
             </div>
           </>
         )}
@@ -153,6 +140,8 @@ function App() {
           </div>
         )}
       </main>
+
+
     </div>
   )
 }
