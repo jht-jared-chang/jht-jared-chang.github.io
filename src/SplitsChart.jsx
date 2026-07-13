@@ -78,7 +78,7 @@ function SplitsChart({ records }) {
             <CartesianGrid strokeDasharray="3 3" stroke="#303030" />
             <XAxis
               dataKey="lapCount"
-              label={{ value: 'Lap Number', position: 'insideBottomRight', offset: -5 }}
+              label={{ value: 'Split', position: 'insideBottomRight', offset: -10 }}
               stroke="#8892b0"
             />
             <YAxis
