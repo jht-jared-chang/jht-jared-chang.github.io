@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import SplitsChart from './SplitsChart'
 import PlayerStatsWidget from './PlayerStatsWidget'
+import Odometer from './Odometer'
 
 const API_BASE_URL = 'https://ff4blbpgd1.execute-api.ap-southeast-2.amazonaws.com/items'
 
@@ -114,11 +115,11 @@ function App() {
                     <tbody>
                       {data.Records?.map((record, idx) => (
                         <tr key={idx} className={idx === 0 ? 'winner' : ''}>
-                          <td>#{idx + 1}</td>
-                          <td>{record.playerName}</td>
-                          <td>{formatSeconds(record.finishTimeSec)}</td>
-                          <td>{record.finalHeartRate} bpm</td>
-                          <td>{record.finalCalories}</td>
+                          <td><Odometer value={idx + 1} /></td>
+                          <td><Odometer value={record.playerName} /></td>
+                          <td><Odometer value={formatSeconds(record.finishTimeSec)} /></td>
+                          <td><Odometer value={`${record.finalHeartRate} bpm`} /></td>
+                          <td><Odometer value={record.finalCalories} /></td>
                         </tr>
                       ))}
                     </tbody>

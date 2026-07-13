@@ -17,6 +17,37 @@ body {
   padding: 2rem;
 }
 
+/* Odometer Character Rolling Animation */
+@keyframes character-roll {
+  0% { transform: translateY(2px); }
+  100% { transform: translateY(calc(var(--offset-em) * -1em + 2px)); }
+}
+
+.odometer {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.odometer-char {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  position: relative;
+  vertical-align: baseline;
+}
+
+.odometer-digit {
+  height: 1em;
+  line-height: 1em;
+}
+
+.odometer-char-inner {
+  display: block;
+  line-height: 1em;
+  animation: character-roll var(--animation-duration, 0.6s) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation-delay: var(--animation-delay, 0s);
+}
 
 header {
   text-align: center;

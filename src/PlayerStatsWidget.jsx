@@ -7,6 +7,7 @@ import {
   ResponsiveContainer,
   Tooltip
 } from 'recharts'
+import Odometer from './Odometer'
 
 const COLORS = [
   '#00d4ff',
@@ -61,7 +62,7 @@ function PlayerStatsWidget({ records }) {
           >
             ← Previous
           </button>
-          <span className="player-name">{selectedPlayer.playerName}</span>
+          <span className="player-name"><Odometer value={selectedPlayer.playerName} /></span>
           <button
             onClick={() => setSelectedPlayerIdx(Math.min(records.length - 1, selectedPlayerIdx + 1))}
             disabled={selectedPlayerIdx === records.length - 1}
@@ -75,21 +76,22 @@ function PlayerStatsWidget({ records }) {
       <div className="widget-grid">
         <div className="widget">
           <div className="widget-label">Total Calories</div>
-          <div className="widget-value">{selectedPlayer.finalCalories}</div>
+          <div className="widget-value"><Odometer value={selectedPlayer.finalCalories} /></div>
         </div>
 
         <div className="widget">
           <div className="widget-label">Total Distance</div>
-          <div className="widget-value">{selectedPlayer.totalDistanceM}m</div>
+          <div className="widget-value"><Odometer value={`${selectedPlayer.totalDistanceM}m`} /></div>
         </div>
 
         <div className="widget">
           <div className="widget-label">Avg Heart Rate</div>
           <div className="widget-value">
-            {selectedPlayer.splits && selectedPlayer.splits.length > 0
-              ? (selectedPlayer.splits.reduce((sum, s) => sum + s.heartRate, 0) / selectedPlayer.splits.length).toFixed(0)
-              : 'N/A'}
-            {' '}bpm
+            <Odometer value={
+              selectedPlayer.splits && selectedPlayer.splits.length > 0
+                ? `${(selectedPlayer.splits.reduce((sum, s) => sum + s.heartRate, 0) / selectedPlayer.splits.length).toFixed(0)} bpm`
+                : 'N/A'
+            } />
           </div>
         </div>
 
