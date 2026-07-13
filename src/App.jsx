@@ -2,43 +2,14 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import SplitsChart from './SplitsChart'
 
-const API_BASE_URL = 'https://ff4blbpgd1.execute-api.ap-southeast-2.amazonaws.com/items' // Set this to your Lambda API endpoint (e.g., 'https://your-api-id.execute-api.region.amazonaws.com/stage')
+const API_BASE_URL = 'https://ff4blbpgd1.execute-api.ap-southeast-2.amazonaws.com/items'
 
-// Global storage for FTMS race data
 window.ftmsRaceData = null
 
 function formatSeconds(seconds) {
   const mins = Math.floor(seconds / 60)
   const secs = (seconds % 60).toFixed(2)
   return `${mins}:${secs.padStart(5, '0')}`
-}
-
-function transformLambdaData(lambdaData) {
-  // lambdaData comes directly from DynamoDB
-  // Structure: { id, timestamp, Records: [...] }
-  
-  const records = lambdaData.Records || []
-  
-  // Transform records into leaderboard
-  const players = records
-    .sort((a, b) => (a.finishTimeSec || Infinity) - (b.finishTimeSec || Infinity))
-    .map((record, idx) => ({
-      id: `p${idx}`,
-      playerIndex: record.playerIndex || idx,
-      name: record.playerName,
-      rank: idx + 1,
-      totalDistance: record.totalDistanceM,
-      totalTime: formatSeconds(record.finishTimeSec),
-      avgSpeed: record.avgSpeedKmh,
-      heartRate: record.finalHeartRate,
-      calories: record.finalCalories
-    }))
-  
-  return {
-    timestamp: lambdaData.Timestamp || lambdaData.timestamp,
-    records: records,
-    players: players
-  }
 }
 
 function App() {
@@ -74,12 +45,8 @@ function App() {
         }
 
         const raceData = await response.json()
-        
-        // Transform Lambda response into app format
-        const transformedData = transformLambdaData(raceData)
-        
-        window.ftmsRaceData = transformedData
-        setData(transformedData)
+        window.ftmsRaceData = raceData
+        setData(raceData)
         setError(null)
       } catch (err) {
         setError(`Failed to load data: ${err.message}`)
@@ -117,24 +84,24 @@ function App() {
             <div className="data-info">
               <h2>Race Results</h2>
               <p className="timestamp">
-                {data.timestamp && new Date(data.timestamp).toLocaleString()}
+                {data.Timestamp && new Date(data.Timestamp).toLocaleString()}
               </p>
 
               <div className="info-grid">
                 <div className="info-card">
                   <strong>Players</strong>
-                  <span>{data.players?.length || 0}</span>
+                  <span>{data.Records?.length || 0}</span>
                 </div>
                 <div className="info-card">
-                  <strong>Total Records</strong>
-                  <span>{data.records?.length || 0}</span>
+                  <strong>Race ID</strong>
+                  <span>{data.id}</span>
                 </div>
               </div>
             </div>
 
             {/* Chart Section */}
             <section className="chart-section">
-              <SplitsChart records={data.records} />
+              <SplitsChart records={data.Records} />
             </section>
 
             {/* Leaderboard */}
@@ -153,15 +120,15 @@ function App() {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.players?.map((player, idx) => (
-                    <tr key={player.id} className={idx === 0 ? 'winner' : ''}>
-                      <td>#{player.rank}</td>
-                      <td>{player.name}</td>
-                      <td>{player.totalTime}</td>
-                      <td>{player.totalDistance}m</td>
-                      <td>{player.avgSpeed?.toFixed(2) || 'N/A'} km/h</td>
-                      <td>{player.heartRate} bpm</td>
-                      <td>{player.calories}</td>
+                  {data.Records?.map((record, idx) => (
+                    <tr key={idx} className={idx === 0 ? 'winner' : ''}>
+                      <td>#{idx + 1}</td>
+                      <td>{record.playerName}</td>
+                      <td>{formatSeconds(record.finishTimeSec)}</td>
+                      <td>{record.totalDistanceM}m</td>
+                      <td>{record.avgSpeedKmh?.toFixed(2) || 'N/A'} km/h</td>
+                      <td>{record.finalHeartRate} bpm</td>
+                      <td>{record.finalCalories}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -172,13 +139,13 @@ function App() {
             <section className="splits">
               <h3>Detailed Player Stats</h3>
               <div className="splits-detail-grid">
-                {data.records?.map((record, idx) => (
+                {data.Records?.map((record, idx) => (
                   <div key={idx} className="record-detail-card">
                     <h4>{record.playerName}</h4>
                     <div className="detail-stats">
                       <div className="stat-row">
                         <span>Player Index</span>
-                        <span className="value">#{record.playerIndex + 1}</span>
+                        <span className="value">#{record.playerIndex}</span>
                       </div>
                       <div className="stat-row">
                         <span>Finish Time</span>
