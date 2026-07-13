@@ -10,7 +10,7 @@
   --color-secondary: #7b2cbf;
   --color-bg-dark: #1a1a2e;
   --color-bg-gradient-end: #16213e;
-  --color-container-dark: #242424;
+  --color-container-dark: #000000;
   --color-container-medium: #303030;
   --color-container-light: #404040;
   --color-chart-bg: #1e1e1e;
@@ -32,13 +32,15 @@
   --radius-lg: 12px;
   
   /* Transitions */
-  --transition-fast: all 0.2s ease;
+  --transition-fast: all 0.2s ease-in-out;
+  --transition-slow: all 0.8s ease-in-out;
+
 }
 
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  background: linear-gradient(135deg, var(--color-bg-dark) 0%, var(--color-bg-gradient-end) 100%);
+  background: black;
   color: var(--color-text-primary);
   min-height: 100vh;
 }
@@ -125,6 +127,8 @@ header h1 {
   font-size: 2.5rem;
   margin: 0 0 0.5rem;
   background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  font-weight: 300;
+  letter-spacing: 0.25rem;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -190,7 +194,7 @@ header p {
 
 .info-card span {
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 200;
   color: var(--color-text-primary);
 }
 
@@ -334,7 +338,8 @@ header p {
 .splits h3,
 .instructions h3 {
   color: var(--color-primary);
-  font-size: 1rem;
+  font-size: 2rem;
+  font-weight: 200;
 }
 
 .leaderboard h3 {
@@ -370,6 +375,11 @@ header p {
 
 .leaderboard tr:hover {
   background: #2a2a3a;
+  transform: translateX(2%);
+}
+
+.leaderboard tr {
+  transition: var(--transition-fast);
 }
 
 .leaderboard .winner {
@@ -403,11 +413,16 @@ header p {
   margin-bottom: 0.5rem;
   text-transform: uppercase;
 }
-
+.widget:hover .widget-label, .widget:hover .widget-value {
+  transform: scale(1.15);
+}
+.widget-label, .widget-value {
+  transition: var(--transition-slow);
+}
 .widget-value {
   color: var(--color-text-primary);
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 200;
 }
 
 .widget-chart {
@@ -505,7 +520,7 @@ header p {
 }
 
 .split-header .lap {
-  font-weight: bold;
+  font-weight: 200;
   color: var(--color-primary);
 }
 
@@ -533,7 +548,7 @@ header p {
 
 .stat .value {
   font-size: 1.25rem;
-  font-weight: bold;
+  font-weight: 200;
   color: var(--color-text-primary);
 }
 
