@@ -13,6 +13,34 @@ function formatSeconds(seconds) {
   return `${mins}:${secs.padStart(5, '0')}`
 }
 
+function transformLambdaData(lambdaData) {
+  // lambdaData comes directly from DynamoDB
+  // It should have: id, timestamp, records (array)
+  
+  const records = lambdaData.records || []
+  
+  // Transform records into leaderboard
+  const players = records
+    .sort((a, b) => (a.finishTimeSec || Infinity) - (b.finishTimeSec || Infinity))
+    .map((record, idx) => ({
+      id: `p${idx}`,
+      playerIndex: record.playerIndex || idx,
+      name: record.playerName,
+      rank: idx + 1,
+      totalDistance: record.totalDistanceM,
+      totalTime: formatSeconds(record.finishTimeSec),
+      avgSpeed: record.avgSpeedKmh,
+      heartRate: record.finalHeartRate,
+      calories: record.finalCalories
+    }))
+  
+  return {
+    timestamp: lambdaData.timestamp,
+    records: records,
+    players: players
+  }
+}
+
 function App() {
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
@@ -46,8 +74,12 @@ function App() {
         }
 
         const raceData = await response.json()
-        window.ftmsRaceData = raceData
-        setData(raceData)
+        
+        // Transform Lambda response into app format
+        const transformedData = transformLambdaData(raceData)
+        
+        window.ftmsRaceData = transformedData
+        setData(transformedData)
         setError(null)
       } catch (err) {
         setError(`Failed to load data: ${err.message}`)
