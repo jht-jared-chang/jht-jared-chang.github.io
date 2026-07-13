@@ -14,7 +14,6 @@ body {
 
 .app {
   min-height: 100vh;
-  padding: 2rem;
 }
 
 header {
@@ -35,10 +34,6 @@ header p {
   color: #8892b0;
 }
 
-main {
-  max-width: 1200px;
-  margin: 0 auto;
-}
 
 .error-banner {
   background: #ff6b6b;
@@ -183,6 +178,109 @@ main {
   border-radius: 2px;
 }
 
+.widgets {
+  background: #242424;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.widgets-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.widgets-header h3 {
+  margin: 0;
+  color: #00d4ff;
+}
+
+.player-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-btn {
+  padding: 0.5rem 1rem;
+  background: #303030;
+  color: #8892b0;
+  border: 1px solid #404040;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.nav-btn:hover:not(:disabled) {
+  background: #404040;
+  color: #fff;
+  border-color: #00d4ff;
+}
+
+.nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.player-name {
+  color: #fff;
+  font-weight: 600;
+  min-width: 150px;
+  text-align: center;
+}
+
+.widget-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 1200px) {
+  .widget-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .widget-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.widget {
+  background: #303030;
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.widget-label {
+  color: #8892b0;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.widget-value {
+  color: #fff;
+  font-size: 1.75rem;
+  font-weight: bold;
+}
+
+.widget-chart {
+  grid-column: span 1;
+  padding: 1rem;
+}
+
 .splits-detail-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -226,11 +324,6 @@ main {
 .leaderboard {
   margin-bottom: 2rem;
 }
-
-.leaderboard {
-  margin-bottom: 2rem;
-}
-
 .leaderboard h3 {
   margin-bottom: 1rem;
   color: #00d4ff;
@@ -246,7 +339,7 @@ main {
 
 .leaderboard th,
 .leaderboard td {
-  padding: 1rem;
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
   text-align: left;
   border-bottom: 1px solid #303030;
 }
@@ -351,4 +444,23 @@ main {
   margin-top: 1rem;
   overflow-x: auto;
   font-family: 'Courier New', monospace;
+}
+
+
+.mainData {
+  display: flex;
+  flex-direction: column;
+  width: 65vw;
+}
+
+.allData {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  justify-content: space-around;
+  
+}
+
+.widgets {
+  width: 30vw;
 }

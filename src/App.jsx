@@ -87,6 +87,9 @@ function App() {
 
         {data && !loading && (
           <>
+          <div className="allData">
+          <div className="mainData">
+
             <div className="data-info">
               <h2>Race Results</h2>
               <p className="timestamp">
@@ -109,8 +112,9 @@ function App() {
             <section className="chart-section">
               <SplitsChart records={data.Records} />
             </section>
-
+            </div>
             {/* Leaderboard */}
+            <div className="widgets">
             <section className="leaderboard">
               <h3>Final Standings</h3>
               <table>
@@ -119,8 +123,6 @@ function App() {
                     <th>Rank</th>
                     <th>Player</th>
                     <th>Finish Time</th>
-                    <th>Distance</th>
-                    <th>Avg Speed</th>
                     <th>HR</th>
                     <th>Calories</th>
                   </tr>
@@ -131,8 +133,6 @@ function App() {
                       <td>#{idx + 1}</td>
                       <td>{record.playerName}</td>
                       <td>{formatSeconds(record.finishTimeSec)}</td>
-                      <td>{record.totalDistanceM}m</td>
-                      <td>{record.avgSpeedKmh?.toFixed(2) || 'N/A'} km/h</td>
                       <td>{record.finalHeartRate} bpm</td>
                       <td>{record.finalCalories}</td>
                     </tr>
@@ -140,48 +140,8 @@ function App() {
                 </tbody>
               </table>
             </section>
-
-            {/* Individual Records */}
-            <section className="splits">
-              <h3>Detailed Player Stats</h3>
-              <div className="splits-detail-grid">
-                {data.Records?.map((record, idx) => (
-                  <div key={idx} className="record-detail-card">
-                    <h4>{record.playerName}</h4>
-                    <div className="detail-stats">
-                      <div className="stat-row">
-                        <span>Player Index</span>
-                        <span className="value">#{record.playerIndex}</span>
-                      </div>
-                      <div className="stat-row">
-                        <span>Finish Time</span>
-                        <span className="value">{formatSeconds(record.finishTimeSec)}</span>
-                      </div>
-                      <div className="stat-row">
-                        <span>Total Distance</span>
-                        <span className="value">{record.totalDistanceM}m</span>
-                      </div>
-                      <div className="stat-row">
-                        <span>Avg Speed</span>
-                        <span className="value">{record.avgSpeedKmh.toFixed(2)} km/h</span>
-                      </div>
-                      <div className="stat-row">
-                        <span>Final Heart Rate</span>
-                        <span className="value">{record.finalHeartRate} bpm</span>
-                      </div>
-                      <div className="stat-row">
-                        <span>Total Calories</span>
-                        <span className="value">{record.finalCalories}</span>
-                      </div>
-                      <div className="stat-row">
-                        <span>Splits Recorded</span>
-                        <span className="value">{record.splits?.length || 0}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
+            </div>
+            </div>
           </>
         )}
 
