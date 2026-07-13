@@ -3,11 +3,8 @@ import { useState, useEffect } from 'react'
 function Odometer({ value }) {
   const valueStr = String(value)
   const [displayChars, setDisplayChars] = useState([])
-  const [animationComplete, setAnimationComplete] = useState(false)
 
   useEffect(() => {
-    setAnimationComplete(false)
-    
     // Initialize with offset digits
     const offset = 5
     const chars = valueStr.split('').map((digit) => {
@@ -19,23 +16,10 @@ function Odometer({ value }) {
       return digit
     })
     setDisplayChars(chars)
-
-    // Set animation complete after all animations finish
-    const maxDuration = (0.3 + (valueStr.length - 1) * 0.1) * 1000 + 500
-    const timer = setTimeout(() => {
-      setAnimationComplete(true)
-    }, maxDuration)
-
-    return () => clearTimeout(timer)
   }, [valueStr])
 
-  // After animation, just return plain text
-  if (animationComplete) {
-    return <span className="odometer">{valueStr}</span>
-  }
-
   const renderCharacter = (currentChar, targetChar, idx) => {
-    const animationDuration = 0.3 + idx * 0.1
+    const animationDuration = 0.8 + idx * 0.1
     const animationDelay = idx * 0.08
 
     if (!/\d/.test(targetChar)) {
@@ -52,16 +36,12 @@ function Odometer({ value }) {
       scrollList.push(String((current + i) % 10))
     }
 
-    // Calculate exact offset: (distance * line-height)
-    const offsetEm = distance
-
     return (
       <span
         key={idx}
         className="odometer-char"
         style={{
-          '--char-count': scrollList.length,
-          '--offset-em': offsetEm,
+          '--offset-em': distance,
           '--animation-duration': `${animationDuration}s`,
           '--animation-delay': `${animationDelay}s`
         }}
