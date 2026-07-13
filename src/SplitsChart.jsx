@@ -107,7 +107,7 @@ function SplitsChart({ records }) {
                 type="monotone"
                 dataKey={`player${idx}`}
                 stroke={COLORS[idx % COLORS.length]}
-                dot={{ r: 4 }}
+                dot={false}
                 activeDot={{ r: 6 }}
                 name={`player${idx}`}
               />
