@@ -15,9 +15,9 @@ function formatSeconds(seconds) {
 
 function transformLambdaData(lambdaData) {
   // lambdaData comes directly from DynamoDB
-  // It should have: id, timestamp, records (array)
+  // Structure: { id, timestamp, Records: [...] }
   
-  const records = lambdaData.records || []
+  const records = lambdaData.Records || []
   
   // Transform records into leaderboard
   const players = records
@@ -35,7 +35,7 @@ function transformLambdaData(lambdaData) {
     }))
   
   return {
-    timestamp: lambdaData.timestamp,
+    timestamp: lambdaData.Timestamp || lambdaData.timestamp,
     records: records,
     players: players
   }
