@@ -62,8 +62,8 @@ function Background() {
               const d23 = p.dist(p2.x, p2.y, p3.x, p3.y)
               const d13 = p.dist(p1.x, p1.y, p3.x, p3.y)
               
-              if (d12 < 150 && d23 < 150 && d13 < 150) {
-                const alpha = p.map(d12 + d23 + d13, 0, width, 80, 10)
+              if (d12 < containerRef.clientWidth/4 && d23 < containerRef.clientWidth/4 && d13 < containerRef.clientWidth/4) {
+                const alpha = p.map(d12 + d23 + d13, 0, containerRef.clientWidth/2, 80, 10)
                 p.fill(0, 212, 255, alpha)
                 p.beginShape(p.TRIANGLES)
                 p.vertex(p1.x, p1.y)
