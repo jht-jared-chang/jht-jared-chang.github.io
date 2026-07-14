@@ -29,3 +29,74 @@ body {
   width: 100%;
   min-height: 100vh;
 }
+#background {
+  position: fixed;
+  width: 100vw;
+  top: 0vh;
+  left: 0vw;
+}
+/* 1. The Horizontal Container */
+.allContent {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  
+  /* CRITICAL: Creates the 3D perspective field */
+  perspective: 1200px; 
+}
+
+/* Hide scrollbar for aesthetics */
+.allContent::-webkit-scrollbar {
+  display: none;
+}
+
+/* 2. Shared Element Styles */
+.app, #settings {
+  flex: 0 0 100vw; /* Fullscreen size */
+  height: 100vh;
+  scroll-snap-align: start;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+
+  /* Tell the animation to use the nearest horizontal scrollbar as its timeline */
+  animation-timeline: scroll(inline nearest);
+  animation-timing-function: linear; /* Essential for natural tracking */
+  animation-fill-mode: both;
+}
+
+/* 3. Assign Custom Keyframes to elements */
+.app {
+  transform-origin: left center;
+  animation-name: tiltAppOut;
+}
+
+#settings {
+  transform-origin: right center;
+  animation-name: tiltSettingsIn;
+}
+
+/* 4. The 3D Scroll Timelines (0% = Scroll Start, 100% = Scroll End) */
+@keyframes tiltAppOut {
+  0% {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: rotateY(45deg);
+    opacity: 0.0;
+  }
+}
+
+@keyframes tiltSettingsIn {
+  0% {
+    transform: rotateY(-45deg);
+    opacity: 0.0;
+  }
+  100% {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+}

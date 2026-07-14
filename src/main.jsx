@@ -5,7 +5,12 @@ import App from './App.jsx'
 import Background from './Background.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Background />
+    <div id="background">
+          <Background />
+          </div>
+    <div className="allContent">
     <App />
+    <div id="settings"></div>
+    </div>
   </StrictMode>,
 )
