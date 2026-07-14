@@ -10,7 +10,7 @@ function Background() {
 
     const sketch = (p) => {
       let particles = []
-      const particleCount = 20
+      const particleCount = 30
 
       p.setup = function() {
         const container = containerRef.current
@@ -63,7 +63,7 @@ function Background() {
               const d13 = p.dist(p1.x, p1.y, p3.x, p3.y)
               
               if (d12 < 150 && d23 < 150 && d13 < 150) {
-                const alpha = p.map(d12 + d23 + d13, 0, 450, 80, 10)
+                const alpha = p.map(d12 + d23 + d13, 0, width, 80, 10)
                 p.fill(0, 212, 255, alpha)
                 p.beginShape(p.TRIANGLES)
                 p.vertex(p1.x, p1.y)

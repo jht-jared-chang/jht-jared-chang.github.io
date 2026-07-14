@@ -17,6 +17,14 @@ const COLORS = [
   '#8338ec'
 ]
 
+// Estimate max calories based on time (approx 1000 kcal/hr for intense activity)
+function estimateMaxCalories(splits) {
+  if (!splits || splits.length === 0) return 1000
+  // Use last split's gameTimeSec as duration, convert to hours
+  const durationHours = (splits[splits.length - 1].gameTimeSec || 1) / 3600
+  return Math.max(100, Math.round(durationHours * 1000))
+}
+
 function PlayerStatsWidget({ records }) {
   const [selectedPlayerIdx, setSelectedPlayerIdx] = useState(0)
 
@@ -25,6 +33,8 @@ function PlayerStatsWidget({ records }) {
   }
 
   const selectedPlayer = records[selectedPlayerIdx]
+  const maxCalories = estimateMaxCalories(selectedPlayer.splits || [])
+  const caloriesPercent = Math.min(100, Math.round((selectedPlayer.finalCalories / maxCalories) * 100))
 
   // Calculate heart rate zones
   const calculateHeartRateZones = (splits) => {
@@ -74,9 +84,37 @@ function PlayerStatsWidget({ records }) {
       </div>
 
       <div className="widget-grid">
-        <div className="widget">
-          <div className="widget-label">Total Calories</div>
-          <div className="widget-value"><Odometer value={selectedPlayer.finalCalories} /></div>
+        <div className="widget widget-calorie">
+          <div className="widget-label">Calories</div>
+          <div className="calorie-chart-wrapper">
+            <div className="calorie-chart" style={{ width: '100%', height: '120px' }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={[{ name: 'Burned', value: caloriesPercent }, { name: 'Remaining', value: 100 - caloriesPercent }]}
+                    cx="50%"
+                    cy="100%"
+                    startAngle={180}
+                    endAngle={0}
+                    innerRadius={20}
+                    outerRadius={40}
+                    fill="#8884d8"
+                    dataKey="value"
+                    stroke="none"
+                    label={false}
+                  >
+                    <Cell fill="#00d4ff" />
+                    <Cell fill="#303030" />
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="calorie-percent">{caloriesPercent}%</div>
+            <div className="calorie-info">
+              <div className="calorie-burned"><Odometer value={selectedPlayer.finalCalories} /> kcal</div>
+              <div className="calorie-max">Max: {maxCalories}</div>
+            </div>
+          </div>
         </div>
 
         <div className="widget">
