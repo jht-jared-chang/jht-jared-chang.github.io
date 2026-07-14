@@ -73,8 +73,10 @@ function App() {
       <Background />
       <div className="app">
       <header>
+        <div className="header-content">
         <h1>FTMS Race Leaderboard</h1>
         <p>Real-time race data from FTMS system</p>
+        </div>
       </header>
 
       <main>
