@@ -70,7 +70,6 @@ function App() {
 
   return (
     <>
-      <Background />
       <div className="app">
       <header>
         <div className="header-content">
