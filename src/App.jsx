@@ -5,7 +5,7 @@ import PlayerStatsWidget from './PlayerStatsWidget'
 import Odometer from './Odometer'
 import Background from './Background'
 
-const API_BASE_URL = 'https://ff4blbpgd1.execute-api.ap-southeast-2.amazonaws.com/items'
+const API_BASE_URL = 'https://cjhwuepln2.execute-api.ap-northeast-1.amazonaws.com/prod/items'
 
 window.ftmsRaceData = null
 
