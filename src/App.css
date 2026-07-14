@@ -230,6 +230,7 @@ header p {
 .chart-section {
   background: var(--color-container-dark);
   backdrop-filter: blur(5px);
+box-shadow: 0 0px 16px rgba(255,255,255,0.5);
 
   border-radius: var(--radius-lg);
   padding: var(--padding-lg);
@@ -332,6 +333,7 @@ header p {
 .player-stats-widget {
   background: var(--color-container-dark);
   backdrop-filter: blur(5px);
+box-shadow: 0 0px 16px rgba(255,255,255,0.5);
   border-radius: var(--radius-lg);
   padding: var(--padding-sm);
   margin-bottom: 0;
@@ -669,6 +671,7 @@ header p {
 .instructions {
   background: var(--color-container-dark);
   backdrop-filter: blur(5px);
+box-shadow: 0 0px 16px rgba(255,255,255,0.5);
   border-radius: var(--radius-lg);
   padding: var(--padding-lg);
 }
