@@ -10,7 +10,7 @@
   --color-secondary: #7b2cbf;
   --color-bg-dark: #1a1a2e;
   --color-bg-gradient-end: #16213e;
-  --color-container-dark: #000000;
+  --color-container-dark: rgba(0,0,0,0.7);
   --color-container-medium: #303030;
   --color-container-light: #404040;
   --color-chart-bg: #1e1e1e;
@@ -227,6 +227,8 @@ header p {
 
 .chart-section {
   background: var(--color-container-dark);
+  backdrop-filter: blur(5px);
+
   border-radius: var(--radius-lg);
   padding: var(--padding-lg);
   flex: 1;
@@ -327,6 +329,7 @@ header p {
 .leaderboard,
 .player-stats-widget {
   background: var(--color-container-dark);
+  backdrop-filter: blur(5px);
   border-radius: var(--radius-lg);
   padding: var(--padding-sm);
   margin-bottom: 0;
@@ -388,7 +391,6 @@ header p {
 }
 
 /* Shared Card Styles */
-/* Shared Card Styles */
 .split-card,
 .record-detail-card,
 .widget,
@@ -396,12 +398,37 @@ header p {
   background: var(--color-container-medium);
   border-radius: var(--radius-md);
   padding: var(--padding-sm);
-    
-  /* 1. Subtle baseline border to frame the card */
+  
+  /* 1. Subtle baseline border */
   border: 1px solid var(--color-border-light, rgba(150, 150, 150, 0.2));
   
-  /* 2. Smooth, slightly longer transition so the change feels organic */
+  /* 2. Prepare the card for 3D depth */
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  
+  /* 3. Ultra-smooth transition for the tilt and shadow */
   transition: var(--transition-slow);
+}
+
+/* Hover & Focus state with a gentle, non-distracting 3D tilt */
+.split-card:hover,
+.record-detail-card:hover,
+.widget:hover,
+.info-card:hover,
+.split-card:focus-within,
+.record-detail-card:focus-within,
+.widget:focus-within,
+.info-card:focus-within {
+  border-color: var(--color-border-active, rgba(150, 150, 150, 0.4));
+  
+  /* - rotateX(4deg): Tilts the top of the card slightly away from you
+     - rotateY(-2deg): Tilts the right side of the card slightly toward you
+     - translateZ(10px): Elegantly lifts the card forward in 3D space
+  */
+  transform: rotateX(4deg) rotateY(50deg) translateZ(10px);
+  
+  /* Shifted shadow to match the direction of the 3D tilt */
+  box-shadow: -4px 12px 24px rgba(0, 0, 0, 0.12);
 }
 
 
@@ -428,12 +455,6 @@ header p {
   border-color: var(--color-border-active, rgba(150, 150, 150, 0.4));
   /* Add a soft, diffused shadow to give a sense of elevation and presence */
   box-shadow: 0 0px 16px rgba(255, 255, 255, 0.5);
-}
-.widget-label, .widget-value {
-  backface-visibility: hidden;
-  -webkit-font-smoothing: subpixel-antialiased;
-  transform: translateZ(0);
-
 }
 .widget-value {
   color: var(--color-text-primary);
@@ -645,6 +666,7 @@ header p {
 
 .instructions {
   background: var(--color-container-dark);
+  backdrop-filter: blur(5px);
   border-radius: var(--radius-lg);
   padding: var(--padding-lg);
 }
